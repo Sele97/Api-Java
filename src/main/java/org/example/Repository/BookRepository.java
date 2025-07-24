@@ -1,10 +1,7 @@
 package org.example.Repository;
-
-import com.mysql.cj.protocol.Resultset;
 import org.example.Model.Book;
-import org.example.Model.LibraryContext;
 
-import javax.xml.transform.Result;
+import org.example.Model.LibraryContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,34 +9,24 @@ import java.util.List;
 public class BookRepository {
 
     //Metodo para obtener la lista de los libros.
-    public static List<Book> getAllBooks() {
+    public static List<Book> getAllBooks() throws SQLException {
         //Creo la lista donde se van a guardar los libros.
         List<Book> bookList = new ArrayList<>();
-
-        //Primero se hace el intento para conectarse a la base de datos.
         Book book;
-        try (Connection conn = LibraryContext.connect()) {
 
-            //Verifico si falla la conexion.
-            if (conn == null) {
-                System.err.println("Connection failed");
-                return bookList;
-            }
+        try (Connection conn = LibraryContext.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM book")) {
 
-            //Si la conexion esta bien ejecuta la query.
-            try
-                    (Statement stmt = conn.createStatement(); //Desde la conexion se crea un Statement para poder ejecutar la consulta.
-                     ResultSet rs = stmt.executeQuery("SELECT * FROM libro")) {
-                while (rs.next()) {
-                    book = new Book(
-                            rs.getInt("id_book"),
-                            rs.getString("title"),
-                            rs.getString("genre"),
-                            rs.getInt("publication_year"),
-                            rs.getString("author_name")
-                    );
-                    bookList.add(book); //Agrega el libro a la lista.
-                }
+            while (rs.next()) {
+                book = new Book(
+                        rs.getInt("id_book"),
+                        rs.getString("title"),
+                        rs.getString("genre"),
+                        rs.getInt("publication_year"),
+                        rs.getString("author_name")
+                );
+                bookList.add(book);
             }
 
         } catch (SQLException e) {
@@ -49,81 +36,89 @@ public class BookRepository {
         return bookList;
     }
 
-        //Metodo para obtener libro por id
+    //Metodo para obtener libro por id
 
-        //Metodo para agregar un libro
+    public static Book getBookbyId(int id_book) {
+        Book book = null;
 
-        public static void createbook(Book book) {
+        try {
+            Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM libro WHERE id_book = ?");
+            stmt.setInt(1, id_book);
+            ResultSet rs = stmt.executeQuery();
 
-            try (Connection conn = LibraryContext.connect()) {
 
-                //Verifico si falla la conexion.
-                if (conn == null) {
-                    System.err.println("Connection failed");
-                    return;
-                }
-            //Si no falla la conexion
-            try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO libro (title, genre, publication_year, author_name) VALUES (?,?,?,?)")){
-                 stmt.setString(1, book.getTitle());
-                 stmt.setString(2,book.getGenre());
-                 stmt.setInt(3,book.getPublication_year());
-                 stmt.setString(4,book.getAuthor_name());
-
-                 stmt.executeUpdate();
-
-                 }
-
-             } catch (SQLException e) {
-                 e.printStackTrace();
-             }
-        }
-
-        //Metodo para editar un libro
-
-        public static void updatebook(Book book) {
-            try (Connection conn = LibraryContext.connect()) {
-
-                //Verifico si falla la conexion.
-                if (conn == null) {
-                    System.err.println("Connection failed");
-                    return;
-                }
-
-                try (PreparedStatement stmt = conn.prepareStatement("UPDATE libro SET title = ?, genre = ?, publication_year = ?, author_name = ? WHERE id_book = ?")) {
-                    stmt.setString(1, book.getTitle());
-                    stmt.setString(2, book.getGenre());
-                    stmt.setInt(3, book.getPublication_year());
-                    stmt.setString(4, book.getAuthor_name());
-                    stmt.setInt(5, book.getId_book());
-
-                    stmt.executeUpdate();
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (rs.next()) {
+                book = new Book(
+                        rs.getInt("id_book"),
+                        rs.getString("title"),
+                        rs.getString("genre"),
+                        rs.getInt("publication_year"),
+                        rs.getString("author_name")
+                );
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return book;
+    }
 
-        //Metodo para eliminar un libro
+    //Metodo para agregar un libro
 
-        public static void deletebook(int idBook) {
+    public static void createbook(Book book) {
 
-            try (Connection conn = LibraryContext.connect()) {
+        try (Connection conn = LibraryContext.connect();
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO book (title, genre, publication_year, author_name) VALUES (?,?,?,?)")) {
 
-                //Verifico si falla la conexion.
-                if (conn == null) {
-                    System.err.println("Connection failed");
-                    return;
-                }
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getGenre());
+            stmt.setInt(3, book.getPublication_year());
+            stmt.setString(4, book.getAuthor_name());
 
-                //Si no falla la conexion...
-                try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM libro where id=?")) {
-                    stmt.setInt(1,idBook);
+            stmt.executeUpdate();
 
-                    int rowsAffected = stmt.executeUpdate(); //ejecuta la consulta delete.
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Metodo para editar un libro
+
+    public static void updatebook(Book updatebook) {
+        try (Connection conn = LibraryContext.connect();
+             PreparedStatement stmt = conn.prepareStatement("UPDATE book SET title = ?, genre = ?, publication_year = ?, author_name = ? WHERE id_book = ?")) {
+
+            stmt.setString(1, updatebook.getTitle());
+            stmt.setString(2, updatebook.getGenre());
+            stmt.setInt(3, updatebook.getPublication_year());
+            stmt.setString(4, updatebook.getAuthor_name());
+            stmt.setInt(5, updatebook.getId_book());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Metodo para eliminar un libro por id
+
+    public static void deletebook(int id_book) throws SQLException {
+
+        try (Connection conn = LibraryContext.connect();
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM book where id=?")) {
+            stmt.setInt(1, id_book);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Libro eliminado correctamente.");
+            } else {
+                System.out.println("No se encontró ningún libro con ese ID.");
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
 }
+
