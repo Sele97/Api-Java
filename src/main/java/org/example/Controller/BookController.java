@@ -18,8 +18,6 @@ public class BookController {
             return BookRepository.getAllBooks();
         }, gson::toJson);
 
-        //
-
         //agregar un nuevo libro
         post("/books", (req, res) -> {
             res.type("application/json");
