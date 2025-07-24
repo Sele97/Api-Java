@@ -1,13 +1,10 @@
 
 package org.example.Controller;
 import static spark.Spark.*;
-
 import org.example.Model.Users;
 import com.google.gson.Gson;
 import org.example.Model.Book;
 import org.example.Repository.BookRepository;
-
-
 import java.util.List;
 
 public class BookController {
@@ -20,6 +17,8 @@ public class BookController {
             res.type("application/json");
             return BookRepository.getAllBooks();
         }, gson::toJson);
+
+        //
 
         //agregar un nuevo libro
         post("/books", (req, res) -> {
@@ -40,15 +39,13 @@ public class BookController {
             return "Updated book";
         });
 
+        //borrar un libro
+
         delete("/books/id",(req, res) -> {
             res.type("application/json");
-
-            Book book = gson.fromJson(req.body(), Book.class);
-            book.getId_book(Integer.parseInt(req.params(":id")));
-
-            BookRepository.deletebook(book);
-            return "Deleted book";
-
+            int id = Integer.parseInt(req.params(":id"));
+            BookRepository.deletebook(id);
+            return "Deleted book with ID " + id;
 
         });
 
@@ -61,7 +58,7 @@ public class BookController {
 
 
 
-}
+
 
 
 
