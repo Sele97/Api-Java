@@ -43,7 +43,7 @@ public class BookRepository {
 
         try {
             Connection conn = LibraryContext.connect();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM libro WHERE id_book = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM book WHERE id_book = ?");
             stmt.setInt(1, id_book);
             ResultSet rs = stmt.executeQuery();
 
