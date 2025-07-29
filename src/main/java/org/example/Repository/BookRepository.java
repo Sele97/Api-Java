@@ -18,7 +18,7 @@ public class BookRepository {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM book")) {
 
-            while (rs.next()) {
+            while (rs.next()) { // rs.next mueve el cursor a la siguiente fila
                 book = new Book(
                         rs.getInt("id_book"),
                         rs.getString("title"),
@@ -38,7 +38,7 @@ public class BookRepository {
 
     //Metodo para obtener libro por id
 
-    public static Book getBookbyId(int id_book) {
+    public static Book getBookById(int id_book) {
         Book book = null;
 
         try {
@@ -66,7 +66,7 @@ public class BookRepository {
 
     //Metodo para agregar un libro
 
-    public static void createbook(Book book) {
+    public static void createBook(Book book) {
 
         try (Connection conn = LibraryContext.connect();
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO book (title, genre, publication_year, author_name) VALUES (?,?,?,?)")) {
@@ -85,7 +85,7 @@ public class BookRepository {
 
     //Metodo para editar un libro
 
-    public static void updatebook(Book updatebook) {
+    public static void updateBook(Book updatebook) {
         try (Connection conn = LibraryContext.connect();
              PreparedStatement stmt = conn.prepareStatement("UPDATE book SET title = ?, genre = ?, publication_year = ?, author_name = ? WHERE id_book = ?")) {
 
@@ -103,7 +103,7 @@ public class BookRepository {
 
     //Metodo para eliminar un libro por id
 
-    public static void deletebook(int id_book) throws SQLException {
+    public static void deleteBook(int id_book) throws SQLException {
 
         try (Connection conn = LibraryContext.connect();
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM book where id=?")) {

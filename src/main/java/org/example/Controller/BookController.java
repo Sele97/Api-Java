@@ -25,7 +25,7 @@ public class BookController {
         get("/books/:id_book",(Request req, Response res) -> {
             res.type("application/json");
             int id = Integer.parseInt(req.params(":id_book")); //se obtiene el ID de los parametros de la URL
-            Book foundBook = BookRepository.getBookbyId(id); //se busca el libro en el repositorio
+            Book foundBook = BookRepository.getBookById(id); //se busca el libro en el repositorio
 
             if (foundBook!= null) {
                 return foundBook; //si se encontro el libro lo devuelve
@@ -38,7 +38,7 @@ public class BookController {
         post("/books", (req, res) -> {
             res.type("application/json");
             Book newBook = gson.fromJson(req.body(), Book.class);
-            BookRepository.createbook(newBook);
+            BookRepository.createBook(newBook);
             return "Book created with exit!";
         });
 
@@ -49,7 +49,7 @@ public class BookController {
             Book book = gson.fromJson(req.body(), Book.class);
             book.setId_book(Integer.parseInt(req.params(":id_book")));
 
-            BookRepository.updatebook(book); //Se actualiza la base de datos
+            BookRepository.updateBook(book); //Se actualiza la base de datos
             return "Updated book";
         });
 
@@ -58,7 +58,7 @@ public class BookController {
         delete("/books/:id_book",(req, res) -> {
             res.type("application/json");
             int id = Integer.parseInt(req.params(":id_book"));
-            BookRepository.deletebook(id);
+            BookRepository.deleteBook(id);
             return "Deleted book with ID " + id;
 
         });

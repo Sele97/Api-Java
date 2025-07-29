@@ -1,9 +1,17 @@
 package org.example.Model;
 
+import org.eclipse.jetty.server.Authentication;
+
 public class Users {
     private int id_user;
     private String first_name;
     private String last_name;
+
+    public Users(int id_user, String first_name, String last_name){
+        this.id_user = id_user;
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
 
     public void setId_user(int id_user) {
         this.id_user = id_user;

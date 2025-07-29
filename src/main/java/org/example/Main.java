@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.example.Controller.BookController;
 
 
+import org.example.Controller.UsersController;
 import org.example.Model.LibraryContext;
 
 import java.sql.Connection;
@@ -28,6 +29,7 @@ public class Main {
             port(4567); // Puerto
 
             BookController.setupRoutes();
+            UsersController.setupRoutes();
         }
 
 
