@@ -62,6 +62,33 @@ public class UsersRepository {
         return user;
     }
 
+    //Metodo para crear un usuario
+
+    public static void createUser(Users user){
+
+        try {
+            Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO users(id_user, first_name, last_name) VALUES (?,?,?)");
+
+            stmt.setInt(1, user.getIdUsuario());
+            stmt.setString(2, user.getFirst_name());
+            stmt.setString(3, user.getLast_name());
+
+            stmt.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+    }
+
 
 }
 
