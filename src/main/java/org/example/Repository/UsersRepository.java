@@ -36,6 +36,33 @@ public class UsersRepository {
         }
         return usersList;
     }
+
+    //Metodo para obtener un usuario por id
+
+    public static Users getUserById(int id_user) throws SQLException {
+        Users user = null;
+
+        try {
+            Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id_user = ?");
+            stmt.setInt(1, id_user);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()){
+                user = new Users(
+                rs.getInt("id_user"),
+                rs.getString("first_name"),
+                rs.getString("last_name")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
 }
 
 
