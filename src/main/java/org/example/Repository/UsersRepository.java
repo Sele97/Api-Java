@@ -1,6 +1,7 @@
 package org.example.Repository;
 
 import com.mysql.cj.protocol.Resultset;
+import org.eclipse.jetty.server.Authentication;
 import org.example.Model.LibraryContext;
 import org.example.Model.Users;
 
@@ -64,27 +65,40 @@ public class UsersRepository {
 
     //Metodo para crear un usuario
 
-    public static void createUser(Users user){
+    public static void createUser(Users user) {
 
         try {
             Connection conn = LibraryContext.connect();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO users(id_user, first_name, last_name) VALUES (?,?,?)");
 
-            stmt.setInt(1, user.getIdUsuario());
+            stmt.setInt(1, user.getId_user());
             stmt.setString(2, user.getFirst_name());
             stmt.setString(3, user.getLast_name());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //Metodo para editar un usuario
+
+    public static void updateUser(Users updateUser){
+
+        try{ Connection conn = LibraryContext.connect();
+             PreparedStatement stmt = conn.prepareStatement("UPDATE users SET first_name= ?, last_name=? WHERE id_user = ?");
+
+             stmt.setString(1, updateUser.getFirst_name());
+             stmt.setString(2, updateUser.getLast_name());
+             stmt.setInt(3, updateUser.getId_user());
 
             stmt.executeUpdate();
 
         }catch (SQLException e){
             e.printStackTrace();
         }
-
-
-
-
-
-
 
 
     }

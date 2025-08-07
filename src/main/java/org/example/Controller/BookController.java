@@ -10,7 +10,7 @@ import spark.Response;
 
 import java.util.List;
 
-public class BookController {
+public class  BookController {
 
     public static <response, request> void setupRoutes() {
         Gson gson = new Gson();
@@ -54,7 +54,6 @@ public class BookController {
         });
 
         //borrar un libro
-
         delete("/books/:id_book",(req, res) -> {
             res.type("application/json");
             int id = Integer.parseInt(req.params(":id_book"));

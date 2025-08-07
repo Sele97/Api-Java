@@ -9,10 +9,8 @@ import spark.Response;
 import org.example.Model.Users;
 
 import static java.lang.reflect.Array.set;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.route.HttpMethod.get;
-import static spark.route.HttpMethod.post;
+import static spark.Spark.*;
+import static spark.route.HttpMethod.*;
 
 public class UsersController {
 
@@ -45,6 +43,19 @@ public class UsersController {
             UsersRepository.createUser(newUser);
             return "User created with exit!";
         }, gson::toJson);
+
+        //editar un usuario
+        put("/users/:id_user",(Request req, Response res) -> {
+            res.type("application/json");
+
+            Users user = gson.fromJson(req.body(), Users.class);
+            user.setId_user(Integer.parseInt(req.params(":id_user")));
+
+            UsersRepository.updateUser(user);
+            return "Updated user";
+
+        }, gson::toJson);
+
 
 
 

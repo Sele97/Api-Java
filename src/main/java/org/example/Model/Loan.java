@@ -1,5 +1,6 @@
 package org.example.Model;
 
+
 public class Loan {
 
     private int id_loan;
@@ -7,6 +8,14 @@ public class Loan {
     private int book_id;
     private int loan_date;
     private int return_date;
+
+    public Loan(int id_loan, int user_id, int book_id, int loan_date, int return_date) {
+        this.id_loan = id_loan;
+        this.user_id = user_id;
+        this.book_id= book_id;
+        this.loan_date = loan_date;
+        this.return_date= return_date;
+    }
 
     public void setId_loan(int id_loan){
         this.id_loan = id_loan;
@@ -20,7 +29,7 @@ public class Loan {
         this.user_id = user_id;
     }
 
-    public int getUser_id(){
+    public int getId_user(){
         return user_id;
     }
 
