@@ -49,11 +49,11 @@ public class UsersRepository {
             stmt.setInt(1, id_user);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 user = new Users(
-                rs.getInt("id_user"),
-                rs.getString("first_name"),
-                rs.getString("last_name")
+                        rs.getInt("id_user"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
                 );
             }
 
@@ -85,26 +85,52 @@ public class UsersRepository {
 
     //Metodo para editar un usuario
 
-    public static void updateUser(Users updateUser){
+    public static void updateUser(Users updateUser) {
 
-        try{ Connection conn = LibraryContext.connect();
-             PreparedStatement stmt = conn.prepareStatement("UPDATE users SET first_name= ?, last_name=? WHERE id_user = ?");
+        try {
+            Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("UPDATE users SET first_name= ?, last_name=? WHERE id_user = ?");
 
-             stmt.setString(1, updateUser.getFirst_name());
-             stmt.setString(2, updateUser.getLast_name());
-             stmt.setInt(3, updateUser.getId_user());
+            stmt.setString(1, updateUser.getFirst_name());
+            stmt.setString(2, updateUser.getLast_name());
+            stmt.setInt(3, updateUser.getId_user());
 
             stmt.executeUpdate();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Metodo para eliminar un usuario
+
+    public static void deleteUser(int id_user) {
+        try (Connection conn = LibraryContext.connect()) {
+            // Primero eliminar loans asociados
+            PreparedStatement deleteLoans = conn.prepareStatement("DELETE FROM loan WHERE user_id = ?");
+            deleteLoans.setInt(1, id_user);
+            deleteLoans.executeUpdate();
+
+            // Despues eliminar usuario
+            PreparedStatement deleteUser = conn.prepareStatement("DELETE FROM users WHERE id_user = ?");
+            deleteUser.setInt(1, id_user);
+            int rowsAffected = deleteUser.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Usuario eliminado correctamente.");
+            } else {
+                System.out.println("No se encontró ningún usuario con ese ID.");
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
     }
 
-
 }
+
+
+
 
 
 
