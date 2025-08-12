@@ -1,13 +1,11 @@
 package org.example.Controller;
 import com.google.gson.Gson;
-import org.example.Model.Book;
 import org.example.Model.Loan;
-import org.example.Repository.BookRepository;
+import org.example.Model.Users;
 import org.example.Repository.LoanRepository;
+import org.example.Repository.UsersRepository;
 import spark.Request;
 import spark.Response;
-import org.example.Model.Loan;
-
 import java.util.List;
 
 import static java.lang.reflect.Array.set;
@@ -40,15 +38,30 @@ public class LoanController {
                 res.status(404);
                 return "Loan not found";
             }
-        }, gson::toJson); 
+        }, gson::toJson);
+
+        //crear un prestamo
+          post("/loan",(Request req, Response res) -> {
+             res.type("application/json");
+             Loan newLoan = gson.fromJson(req.body(), Loan.class);
+             LoanRepository.createLoan(newLoan);
+             return "Loan created with exit!";
+             }, gson::toJson);
+
+
     }
 
 
 
+}
 
 
 
-    }
+
+
+
+
+
 
 
 
