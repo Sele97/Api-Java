@@ -1,12 +1,11 @@
 package org.example.Repository;
-
-import org.example.Model.Book;
 import org.example.Model.LibraryContext;
 import org.example.Model.Loan;
 
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LoanRepository {
@@ -46,11 +45,19 @@ public class LoanRepository {
 
         try {
             Connection conn = LibraryContext.connect();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM loan WHERE user_id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM loan WHERE id_loan= ?");
             stmt.setInt(1, id_loan);
             ResultSet rs = stmt.executeQuery();
 
-
+            if (rs.next()) {
+                loan = new Loan(
+                        rs.getInt("id_loan"),
+                        rs.getInt("user_id"),
+                        rs.getInt("book_id"),
+                        rs.getDate("loan_date"),
+                        rs.getDate("return_date")
+                );
+            }
 
 
         }catch (SQLException e){
@@ -59,11 +66,32 @@ public class LoanRepository {
 
         return loan;
 
+    }
 
+    //Metodo para crear un prestamo
+    public static void createLoan(Loan loan){
+        try
+            (Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO loan (id_loan, user_id, book_id, loan_date, return_date) VALUES (?,?,?,?,?)")) {
+
+            stmt.setInt(1, loan.getId_loan());
+            stmt.setInt(2, loan.getId_user());
+            stmt.setInt(3, loan.getBook_id());
+            stmt.setDate(4, new java.sql.Date(loan.getLoan_date().getTime()));
+            stmt.setDate(5, new java.sql.Date(loan.getReturn_date().getTime()));
+
+            stmt.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        }
 
 
     }
 
 
 
-}
