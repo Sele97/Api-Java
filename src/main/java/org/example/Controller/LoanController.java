@@ -1,6 +1,8 @@
 package org.example.Controller;
 import com.google.gson.Gson;
+import org.example.Model.Book;
 import org.example.Model.Loan;
+import org.example.Repository.BookRepository;
 import org.example.Repository.LoanRepository;
 import spark.Request;
 import spark.Response;
@@ -26,11 +28,25 @@ public class LoanController {
             return gson.toJson(loans);
         });
 
+        //obtener prestamo por id
+        get("/loan/:id_loan", (Request req, Response res) -> {
+            res.type("application/json");
+            int id = Integer.parseInt(req.params(":id_loan"));
+            Loan foundLoan = LoanRepository.getLoanByID(id);
 
-
-
-
+            if (foundLoan != null) {
+                return foundLoan;
+            } else {
+                res.status(404);
+                return "Loan not found";
+            }
+        }, gson::toJson); 
     }
+
+
+
+
+
 
     }
 
