@@ -25,8 +25,8 @@ public class LoanRepository {
                         rs.getInt("id_loan"),
                         rs.getInt("user_id"),
                         rs.getInt("book_id"),
-                        rs.getInt("loan_date"),
-                        rs.getInt("return_date")
+                        rs.getDate("loan_date"),
+                        rs.getDate("return_date")
                 );
                 loanList.add(loan);
             }
