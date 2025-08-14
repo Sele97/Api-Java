@@ -104,6 +104,27 @@ public class LoanRepository {
             e.printStackTrace();
         }
     }
+
+    //Metodo para eliminar un prestamo
+    public static void deleteLoan(int id_loan) throws SQLException {
+        try
+                (Connection conn = LibraryContext.connect();
+                 PreparedStatement stmt = conn.prepareStatement("DELETE FROM loan WHERE id_loan = ?")) {
+            stmt.setInt(1, id_loan);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Loan successfully removed");
+            } else {
+                System.out.println("No Loan was found with that ID");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
  }
 
 
