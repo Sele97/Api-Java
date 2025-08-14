@@ -30,13 +30,11 @@ public class LoanRepository {
                 loanList.add(loan);
             }
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return loanList;
-
     }
 
     //Metodo para obtener prestamo por id.
@@ -86,12 +84,31 @@ public class LoanRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        }
-
-
     }
+
+    //Metodo para editar un prestamo
+    public static void updateLoan(Loan updateLoan) {
+        try  {
+            Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("UPDATE loan SET book_id= ?, loan_date = ?, return_date = ?, user_id = ? WHERE id_loan = ?");
+
+            stmt.setInt(1, updateLoan.getBook_id());
+            stmt.setDate(2, new java.sql.Date(updateLoan.getLoan_date().getTime()));
+            stmt.setDate(3, new java.sql.Date(updateLoan.getReturn_date().getTime()));
+            stmt.setInt(4, updateLoan.getId_user());
+            stmt.setInt(5, updateLoan.getId_loan());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+ }
+
+
+
+
 
 
 

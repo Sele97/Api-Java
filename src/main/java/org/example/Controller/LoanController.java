@@ -1,17 +1,13 @@
 package org.example.Controller;
 import com.google.gson.Gson;
 import org.example.Model.Loan;
-import org.example.Model.Users;
 import org.example.Repository.LoanRepository;
-import org.example.Repository.UsersRepository;
 import spark.Request;
 import spark.Response;
 import java.util.List;
-
-import static java.lang.reflect.Array.set;
 import static spark.Spark.*;
-import static spark.route.HttpMethod.*;
 import static spark.Spark.get;
+import static spark.Spark.put;
 import static spark.route.HttpMethod.get;
 
 public class LoanController {
@@ -41,12 +37,25 @@ public class LoanController {
         }, gson::toJson);
 
         //crear un prestamo
-          post("/loan",(Request req, Response res) -> {
-             res.type("application/json");
-             Loan newLoan = gson.fromJson(req.body(), Loan.class);
-             LoanRepository.createLoan(newLoan);
-             return "Loan created with exit!";
-             }, gson::toJson);
+        post("/loan", (Request req, Response res) -> {
+            res.type("application/json");
+            Loan newLoan = gson.fromJson(req.body(), Loan.class);
+            LoanRepository.createLoan(newLoan);
+            return "Loan created with exit!";
+        }, gson::toJson);
+
+        //editar un prestamo
+        put("/loan/:id_loan", (Request req, Response res) -> {
+            res.type("application/json");
+            Loan loan = gson.fromJson(req.body(), Loan.class);
+            loan.setId_loan(Integer.parseInt(req.params(":id_loan")));
+            LoanRepository.updateLoan(loan);
+            return "Loan updated successfully";
+        }, gson::toJson);
+
+
+
+
 
 
     }
