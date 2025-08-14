@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.example.Controller.BookController;
 
 
+import org.example.Controller.LoanController;
 import org.example.Controller.UsersController;
 import org.example.Model.LibraryContext;
 
@@ -30,6 +31,7 @@ public class Main {
 
             BookController.setupRoutes();
             UsersController.setupRoutes();
+            LoanController.setupRoutes();
         }
 
 

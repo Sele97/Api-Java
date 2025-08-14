@@ -1,7 +1,6 @@
 package org.example.Repository;
 import org.example.Model.LibraryContext;
 import org.example.Model.Loan;
-
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class LoanRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return loanList;
     }
 
@@ -56,21 +54,17 @@ public class LoanRepository {
                         rs.getDate("return_date")
                 );
             }
-
-
         }catch (SQLException e){
             e.printStackTrace();
         }
-
         return loan;
-
     }
 
     //Metodo para crear un prestamo
-    public static void createLoan(Loan loan){
+    public static void createLoan(Loan loan) {
         try
             (Connection conn = LibraryContext.connect();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO loan (id_loan, user_id, book_id, loan_date, return_date) VALUES (?,?,?,?,?)")) {
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO loan (id_loan, user_id, book_id, loan_date, return_date) VALUES (?,?,?,?,?)")) {
 
             stmt.setInt(1, loan.getId_loan());
             stmt.setInt(2, loan.getId_user());
@@ -79,7 +73,6 @@ public class LoanRepository {
             stmt.setDate(5, new java.sql.Date(loan.getReturn_date().getTime()));
 
             stmt.executeUpdate();
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,8 +101,8 @@ public class LoanRepository {
     //Metodo para eliminar un prestamo
     public static void deleteLoan(int id_loan) throws SQLException {
         try
-                (Connection conn = LibraryContext.connect();
-                 PreparedStatement stmt = conn.prepareStatement("DELETE FROM loan WHERE id_loan = ?")) {
+            (Connection conn = LibraryContext.connect();
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM loan WHERE id_loan = ?")) {
             stmt.setInt(1, id_loan);
 
             int rowsAffected = stmt.executeUpdate();
@@ -123,8 +116,6 @@ public class LoanRepository {
             e.printStackTrace();
         }
     }
-
-
  }
 
 
