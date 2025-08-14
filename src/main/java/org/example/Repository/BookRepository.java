@@ -1,6 +1,5 @@
 package org.example.Repository;
 import org.example.Model.Book;
-
 import org.example.Model.LibraryContext;
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,9 +31,7 @@ public class BookRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return bookList;
-
     }
 
     //Metodo para obtener libro por id
@@ -47,7 +44,6 @@ public class BookRepository {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM book WHERE id_book = ?");
             stmt.setInt(1, id_book);
             ResultSet rs = stmt.executeQuery();
-
 
             if (rs.next()) {
                 book = new Book(
@@ -87,6 +83,7 @@ public class BookRepository {
     //Metodo para editar un libro
 
     public static void updateBook(Book updatebook) {
+
         try (Connection conn = LibraryContext.connect();
              PreparedStatement stmt = conn.prepareStatement("UPDATE book SET title = ?, genre = ?, publication_year = ?, author_name = ? WHERE id_book = ?")) {
 
@@ -112,9 +109,9 @@ public class BookRepository {
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Libro eliminado correctamente.");
+                System.out.println("Book successfully removed");
             } else {
-                System.out.println("No se encontró ningún libro con ese ID.");
+                System.out.println("No book was found with that ID");
             }
 
         } catch (SQLException e) {

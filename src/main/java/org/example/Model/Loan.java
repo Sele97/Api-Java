@@ -1,10 +1,7 @@
 package org.example.Model;
-
-
 import java.util.Date;
 
 public class Loan {
-
     private int id_loan;
     private int user_id;
     private int book_id;
@@ -19,22 +16,27 @@ public class Loan {
         this.return_date= return_date;
     }
 
-    public void setId_loan(int id_loan){
+    public void setId_loan(int id_loan)
+    {
         this.id_loan = id_loan;
     }
 
-    public int getId_loan(){
+    public int getId_loan()
+    {
         return id_loan;
     }
 
-    public int setUser_id(int user_id){ this.user_id = user_id;
-    return user_id;}
+    public int setUser_id(int user_id)
+    {   this.user_id = user_id;
+        return user_id;
+    }
 
     public int getId_user(){
         return user_id;
     }
 
-    public void setBook_id(int book_id){
+    public void setBook_id(int book_id)
+    {
         this.book_id = book_id;
     }
 

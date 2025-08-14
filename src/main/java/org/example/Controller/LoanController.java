@@ -2,7 +2,6 @@ package org.example.Controller;
 import com.google.gson.Gson;
 import org.example.Model.Loan;
 import org.example.Repository.LoanRepository;
-import org.example.Repository.UsersRepository;
 import spark.Request;
 import spark.Response;
 import java.util.List;
@@ -61,16 +60,7 @@ public class LoanController {
             LoanRepository.deleteLoan(id);
             return "Deleted loan with ID " + id;
         });
-
-
-
-
-
-
     }
-
-
-
 }
 
 

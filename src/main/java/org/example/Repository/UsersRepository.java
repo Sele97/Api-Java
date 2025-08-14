@@ -1,17 +1,15 @@
 package org.example.Repository;
-
 import com.mysql.cj.protocol.Resultset;
 import org.eclipse.jetty.server.Authentication;
 import org.example.Model.LibraryContext;
 import org.example.Model.Users;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersRepository {
-    //Metodo para obtener toda la lista de usuarios
 
+    //Metodo para obtener toda la lista de usuarios
     public static List<Users> getAllUsers() throws SQLException {
 
         //Creo la lista donde se van a guardar los usuarios
@@ -20,8 +18,7 @@ public class UsersRepository {
 
         try (Connection conn = LibraryContext.connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM users")
-        ) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM users")) {
 
             while (rs.next()) {
                 users = new Users(
@@ -39,7 +36,6 @@ public class UsersRepository {
     }
 
     //Metodo para obtener un usuario por id
-
     public static Users getUserById(int id_user) throws SQLException {
         Users user = null;
 
@@ -64,7 +60,6 @@ public class UsersRepository {
     }
 
     //Metodo para crear un usuario
-
     public static void createUser(Users user) {
 
         try {
@@ -80,11 +75,9 @@ public class UsersRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     //Metodo para editar un usuario
-
     public static void updateUser(Users updateUser) {
 
         try {
@@ -103,7 +96,6 @@ public class UsersRepository {
     }
 
     //Metodo para eliminar un usuario
-
     public static void deleteUser(int id_user) {
         try (Connection conn = LibraryContext.connect()) {
             // Primero eliminar loans asociados
@@ -117,16 +109,14 @@ public class UsersRepository {
             int rowsAffected = deleteUser.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Usuario eliminado correctamente.");
+                System.out.println("User successfully removed");
             } else {
-                System.out.println("No se encontró ningún usuario con ese ID.");
+                System.out.println("No user was found with that ID");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-
 }
 
 

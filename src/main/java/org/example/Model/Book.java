@@ -1,5 +1,4 @@
 package org.example.Model;
-
 import java.time.LocalDateTime;
 
 public class Book {
@@ -56,10 +55,5 @@ public class Book {
     public String getAuthor_name(){
         return author_name;
     }
-
-
-
-
-
 
 }

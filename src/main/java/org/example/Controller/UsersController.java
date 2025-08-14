@@ -1,20 +1,15 @@
 
 package org.example.Controller;
 import com.google.gson.Gson;
-import org.example.Model.Book;
-import org.example.Repository.BookRepository;
 import org.example.Repository.UsersRepository;
 import spark.Request;
 import spark.Response;
 import org.example.Model.Users;
-
-
 import static java.lang.reflect.Array.set;
 import static spark.Spark.*;
 import static spark.route.HttpMethod.*;
 import static spark.Spark.get;
 import static spark.route.HttpMethod.get;
-
 
 public class UsersController {
 
@@ -40,7 +35,6 @@ public class UsersController {
             }
         }, gson::toJson);
 
-
         //crear un usuario
         post("/users", (Request req, Response res) -> {
             res.type("application/json");
@@ -58,7 +52,6 @@ public class UsersController {
 
             UsersRepository.updateUser(user);
             return "Updated user";
-
         }, gson::toJson);
 
         //eliminar un usuario
@@ -67,7 +60,6 @@ public class UsersController {
             int id = Integer.parseInt(req.params(":id_user"));
             UsersRepository.deleteUser(id);
             return "Deleted user with ID " + id;
-
         });
 
     }

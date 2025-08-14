@@ -1,4 +1,3 @@
-
 package org.example.Controller;
 import static spark.Spark.*;
 import org.example.Model.Users;
@@ -7,7 +6,7 @@ import org.example.Model.Book;
 import org.example.Repository.BookRepository;
 import spark.Request;
 import spark.Response;
-
+import java.util.Date;
 import java.util.List;
 
 public class  BookController {
@@ -22,13 +21,13 @@ public class  BookController {
         }, gson::toJson); //convierte el mensaje a JSON
 
         //obtener libro por id
-        get("/books/:id_book",(Request req, Response res) -> {
+        get("/books/:id_book", (Request req, Response res) -> {
             res.type("application/json");
-            int id = Integer.parseInt(req.params(":id_book")); //se obtiene el ID de los parametros de la URL
-            Book foundBook = BookRepository.getBookById(id); //se busca el libro en el repositorio
+            int id = Integer.parseInt(req.params(":id_book"));
+            Book foundBook = BookRepository.getBookById(id);
 
-            if (foundBook!= null) {
-                return foundBook; //si se encontro el libro lo devuelve
+            if (foundBook != null) {
+                return foundBook;
             } else {
                 return "Book not found";
             }
@@ -49,22 +48,20 @@ public class  BookController {
             Book book = gson.fromJson(req.body(), Book.class);
             book.setId_book(Integer.parseInt(req.params(":id_book")));
 
-            BookRepository.updateBook(book); //Se actualiza la base de datos
+            BookRepository.updateBook(book);
             return "Updated book";
         });
 
         //borrar un libro
-        delete("/books/:id_book",(req, res) -> {
+        delete("/books/:id_book", (req, res) -> {
             res.type("application/json");
             int id = Integer.parseInt(req.params(":id_book"));
             BookRepository.deleteBook(id);
             return "Deleted book with ID " + id;
 
         });
-
     }
-
-    }
+}
 
 
 
